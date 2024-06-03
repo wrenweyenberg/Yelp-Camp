@@ -10,6 +10,6 @@ userSchema = new Schema({
     }
 })
 
-userSchema.plugin(passportLocalMongoose); //this adds on to our schema: a username, password, ensures usernames are unique, gives us methods, etc.
+userSchema.plugin(passportLocalMongoose); 
 
 module.exports=mongoose.model('User', userSchema);

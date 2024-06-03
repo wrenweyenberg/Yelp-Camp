@@ -5,7 +5,7 @@ const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        req.session.returnTo = req.originalUrl; //saves where the person is if they aren't logged in yet
+        req.session.returnTo = req.originalUrl;
         req.flash('error', 'You must be signed in')
         return res.redirect('/login')
     }
@@ -22,7 +22,7 @@ module.exports.storeReturnTo = (req, res, next) => {
 module.exports.validateCampground=(req, res, next)=>{
     const { error } = campgroundSchema.validate(req.body);
     if (error){
-        const msg = error.details.map(el=> el.message).join(',') //details is an array of object. this maps over and links all them together
+        const msg = error.details.map(el=> el.message).join(',')
         throw new ExpressError(msg, 400)
     } else{
         next();
@@ -54,7 +54,7 @@ module.exports.isReviewAuthor = async (req,res,next) => {
 module.exports.validateReview=(req, res, next)=>{
     const { error } = reviewSchema.validate(req.body);
     if (error){
-        const msg = error.details.map(el=> el.message).join(',') //details is an array of object. this maps over and links all them together
+        const msg = error.details.map(el=> el.message).join(',') 
         throw new ExpressError(msg, 400)
     } else{
         next();

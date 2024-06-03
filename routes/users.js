@@ -14,7 +14,7 @@ router.route('/register')
 
 router.route('/login')
     .get(users.renderLogin)
-    //saves last url before user logs in and sends them to that
+
     .post(storeReturnTo, passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), users.login)
 
 router.get('/logout', users.logout); 

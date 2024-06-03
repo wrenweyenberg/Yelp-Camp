@@ -7,12 +7,12 @@ const { isLoggedIn, isAuthor, validateCampground} = require('../middleware')
 const campgrounds = require('../controllers/campgrounds')
 const multer = require('multer')
 const { storage } = require('../cloudinary')
-const upload = multer({ storage }); //upload using the storage we just made in the previous line
+const upload = multer({ storage }); 
 
 router.route('/')
     .get(catchAsync(campgrounds.index))
     .post(isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgrounds.createCampground))
-    // /new needs to go before the :id otherwise, it will think that /new just an ID
+    
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
 router.route('/:id')

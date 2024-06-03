@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router({ mergeParams: true } ) //carries params over so we can access them in req.params WEIRD EXPRESS.ROUTER THING
+const router = express.Router({ mergeParams: true } ) 
 const { reviewSchema } = require('../schemas.js');
 const { validateReview, isLoggedIn, isAuthor, isReviewAuthor} =require('../middleware')
 const catchAsync = require('../utils/catchAsync');

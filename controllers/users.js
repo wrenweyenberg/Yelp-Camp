@@ -12,7 +12,7 @@ module.exports.register = async (req, res, next) =>{
     try {
     const { username, email, password } = req.body;
     const user = new User({username, email})
-    const registeredUser = await User.register(user, password); //automatically have this .register() method: stores hashed passwords and salts for us.
+    const registeredUser = await User.register(user, password);
     req.login(registeredUser, err=>{
         if(err) return next(err)
         req.flash('success','Welcome to Yelp Camp')

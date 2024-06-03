@@ -1,12 +1,11 @@
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
-//when we deploy, we will be running our code in production. If we are in "development", we will require the dotenv package, which takes the variables from .env and adds them to process.env
-//in production, this is different:
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const ejsMate = require('ejs-mate'); //lets us use templating in our ejs views (sometimes called engine)
+const ejsMate = require('ejs-mate'); 
 const ExpressError = require('./utils/ExpressError');
 const session = require('express-session')
 const MongoDBStore = require("connect-mongo")(session);
@@ -20,17 +19,17 @@ const mongoSanitize = require('express-mongo-sanitize')
 
 const User = require('./models/user');
 const Review = require('./models/review');
-const Campground = require('./models/campground'); //require mongoose model
+const Campground = require('./models/campground');
 
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users')
-// const dbUrl = process.env.DB_URL
+
 const dbUrl = 'mongodb://localhost:27017/yelp-camp'
 
 mongoose.connect(dbUrl);
 
-const db = mongoose.connection; //shortcut
+const db = mongoose.connection; 
 db.on('error', console.error.bind(console,"connection error:"));
 db.once("open",()=>{
     console.log("database connected");
@@ -39,7 +38,7 @@ db.once("open",()=>{
 const app = express();
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
-app.use(express.static(path.join(__dirname,'public'))) //allows us to serve files in the public directory
+app.use(express.static(path.join(__dirname,'public')))
 app.use(mongoSanitize())
 
 const store = new MongoDBStore({
@@ -71,11 +70,11 @@ app.use(flash());
 //PASSPORT INITIALIZATION AND MIDDLEWARE
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate())); //tells passport to use the Local Strategy and that our authentication is located on User model(created for us automatically when using the plugin)
-passport.serializeUser(User.serializeUser())  //how to store a user in a session
-passport.deserializeUser(User.deserializeUser()) //how to get a user out of a session
+passport.use(new LocalStrategy(User.authenticate())); 
+passport.serializeUser(User.serializeUser()) 
+passport.deserializeUser(User.deserializeUser()) 
 
-app.engine('ejs', ejsMate) //tells express to use ejsMate instead of the default ejs view engine
+app.engine('ejs', ejsMate) 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname,'views'))
 
@@ -87,7 +86,7 @@ app.use((req,res,next)=> {
 })
 
 app.use('/campgrounds', campgroundRoutes)
-app.use('/campgrounds/:id/reviews', reviewRoutes) //need to pass in MERGE PARAMS to express.router if we want access to :id
+app.use('/campgrounds/:id/reviews', reviewRoutes)
 app.use('/', userRoutes)
 
 app.get('/', (req, res) => {

@@ -14,14 +14,14 @@ module.exports.renderNewForm = (req,res)=>{
 }
 
 module.exports.createCampground = async (req, res)=> {
-    // if(!req.body.campground) throw new ExpressError('Invalid Campground Data', 400)
+
     
     const campground = new Campground(req.body.campground);
     console.log("new campground", campground)
     const result = await maptilerClient.geocoding.forward(campground.location, { limit : 1 });
-    campground.geometry = result.features[0].geometry; //adding geoJSON directly into our model
+    campground.geometry = result.features[0].geometry; 
     console.log("after geometry added", campground)
-    campground.images = req.files.map(f => ({url:f.path, filename: f.filename})) //map over the req.files object and put the filename in path in the campgrounds.images
+    campground.images = req.files.map(f => ({url:f.path, filename: f.filename}))
     campground.author = req.user._id;
     await campground.save()
     req.flash('success', 'Successfully made a new campground!');
@@ -32,8 +32,8 @@ module.exports.showCampground = async (req, res)=> {
     const { id } = req.params;
     const campground = await Campground.findById(id).populate({
         path: 'reviews',
-            populate: {path: 'author'} //this populates the author of the review --nested populate   
-    }).populate('author'); //this populates the author of the campground
+            populate: {path: 'author'}    
+    }).populate('author'); 
         if(!campground){
             req.flash('error', 'Cannot find that campground');
             return res.redirect('/campgrounds');
